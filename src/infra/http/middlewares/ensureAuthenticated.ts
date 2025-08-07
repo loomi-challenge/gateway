@@ -6,7 +6,7 @@ export function makeEnsureAuthenticated(authProvider: IAuthProvider) {
     "/login",
     "/register",
     "/confirm-user",
-    "/resend-code",
+    "/resend-confirmation-code",
   ];
 
   return async function (req: Request, res: Response, next: NextFunction) {
