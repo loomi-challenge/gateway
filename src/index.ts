@@ -1,6 +1,8 @@
 import express, { Router } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import dotenv from "dotenv";
+import { makeEnsureAuthenticated } from "./infra/http/middlewares/ensureAuthenticated";
+import { CognitoAuthProvider } from "./infra/auth/cognito-auth-provider";
 
 dotenv.config();
 
@@ -11,9 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const apiRouter = Router();
+const authProvider = new CognitoAuthProvider();
 
 apiRouter.use(
   "/users",
+  makeEnsureAuthenticated(authProvider),
   createProxyMiddleware({
     target: "http://localhost:3001",
     changeOrigin: true,
@@ -25,6 +29,7 @@ apiRouter.use(
 
 apiRouter.use(
   "/transactions",
+  makeEnsureAuthenticated(authProvider),
   createProxyMiddleware({
     target: "http://localhost:3002",
     changeOrigin: true,
