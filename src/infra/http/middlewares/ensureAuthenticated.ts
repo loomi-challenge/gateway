@@ -24,7 +24,10 @@ export function makeEnsureAuthenticated(authProvider: IAuthProvider) {
 
     try {
       const user = await authProvider.verifyToken(token);
-      req.user = user;
+        (req as any).user = user;
+
+        req.headers["x-user-id"] = user.id;
+        req.headers["x-user-email"] = user.email;
       next();
     } catch (error) {
       return res.status(401).json({ error: "Invalid or expired token" });
