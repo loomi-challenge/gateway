@@ -15,6 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 const apiRouter = Router();
 const authProvider = new CognitoAuthProvider();
 
+apiRouter.get("/health", makeEnsureAuthenticated(authProvider), (req, res) => {
+  res.send("OK");
+});
+
 apiRouter.use(
   "/users",
   makeEnsureAuthenticated(authProvider),
