@@ -19,7 +19,7 @@ const urlencodedParsingMiddleware = express.urlencoded({ extended: true });
 apiRouter.patch(
   "/users/profile-picture",
   makeEnsureAuthenticated(authProvider),
-  proxy("localhost:3001", {
+  proxy("client-service:3000", {
     proxyReqPathResolver: (req) => {
       return "/profile-picture"; 
     },
@@ -32,7 +32,7 @@ apiRouter.use(
   "/auth",
   jsonParsingMiddleware, 
   urlencodedParsingMiddleware,
-  proxy("localhost:3001", {
+  proxy("client-service:3000", {
     proxyReqPathResolver: (req) => {
       return req.originalUrl.replace("/api/auth", "/auth");
     }
@@ -44,7 +44,7 @@ apiRouter.use(
   jsonParsingMiddleware, 
   urlencodedParsingMiddleware,
   makeEnsureAuthenticated(authProvider),
-  proxy("localhost:3001", {
+  proxy("client-service:3000", {
     proxyReqPathResolver: (req) => {
       return req.originalUrl.replace("/api/users", "");
     }
@@ -56,7 +56,7 @@ apiRouter.use(
   jsonParsingMiddleware,
   urlencodedParsingMiddleware,
   makeEnsureAuthenticated(authProvider),
-  proxy("localhost:3002", {
+  proxy("transaction-service:3000", {
     proxyReqPathResolver: (req) => {
       return req.originalUrl.replace("/api/transactions", "");
     }
